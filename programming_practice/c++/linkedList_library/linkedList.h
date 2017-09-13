@@ -1,20 +1,23 @@
-#ifndef LINKEDLIST.H
-#define LINKEDLIST.H
+#ifndef LINKEDLIST_H_
+#define LINKEDLIST_H_
 
 #include <stdio>
 #include <stdlib>
 #include "linkedNode.h"
 
-class linkedList
+class linkedList : public linkedNode
 {
 public:
 	linkedList();
-	linkedList(int numBranches);
+	linkedList(int numBranches, string type);
 	~linkedList();
 	void addNodeFront(); 					//add comdition for one branch per node
 	void addNodeEnd();						//add comdition for one branch per node
 	void addNodeAfter(linkedNode* node);	//add comdition for one branch per node
 	void removeNode(linkedNode* node);		//add comdition for one branch per node
+	void addChild(linkedNode* node);
+
+
 
 	//setters
 	void set_numNodes(int);
@@ -26,10 +29,11 @@ public:
 	linkedNode* tail; //if branches > 1, tail will not be used
 private:
 	int numNodes;
+	string treeType;
 	int branches;
 };
 
 
 
 
-#endif //LINKEDLIST.H
+#endif //LINKEDLIST_H_

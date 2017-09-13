@@ -6,25 +6,35 @@ linkedList::linkedList()
 	head = NULL;
 	tail = NULL;
 	numNodes = 0;
+	treeType = "normal"; //monary doubly-linked list
 	branches = 1;
 }
-linkedList::linkedList(int numBranches)
+linkedList::linkedList(int numBranches, string type)
 {
 	branches = numBranches;
 	numNodes = 0;
+	treeType = type;
 	head = NULL;
 	tail = NULL;
 }
 linkedList::~linkedList()
 {
 	linkedNode* deleter = head;
-	while (deleter != tail)
+	switch(treeType)
 	{
-		deleter = deleter->next;
-		delete deleter->prev;
+		case "normal":
+			while (deleter != tail)
+			{
+				deleter = deleter->next;
+				delete deleter->prev;
+			}
+			delete head;
+			delete tail;
+			break;
+		case "binary":
+
+			break;
 	}
-	delete head;
-	delete tail;
 }
 void linkedList::addNodeFront()
 {
@@ -84,31 +94,45 @@ void linkedList::addNodeAfter(linkedNode* node)
 }
 void linkedList::removeNode(linkedNode* node)
 {
-	if (numNodes == 0)
+	switch(treeType)
 	{
-		return;
-	}
-	else if (numNodes == 1)
-	{
-		head = NULL;
-		tail = NULL;
-		delete node;
-	}
-	else
-	{
-		node->next->prev = node->prev;
-		node->prev->next = node->next;
-		if (head == node)
+	case "normal":
+		if (numNodes == 0)
 		{
-			head = node->next;
+			return;
 		}
-		if (tail == node)
+		else if (numNodes == 1)
 		{
-			tail = node->prev;
+			head = NULL;
+			tail = NULL;
+			delete node;
 		}
-		delete node;
+		else
+		{
+			node->next->prev = node->prev;
+			node->prev->next = node->next;
+			if (head == node)
+			{
+				head = node->next;
+			}
+			if (tail == node)
+			{
+				tail = node->prev;
+			}
+			delete node;
+		}
+		numNodes--;
+		break;
+	case "binary":
+
+		break;
 	}
-	numNodes--;
+}
+void addChild(linkedNode* node)
+{
+	linkedNode* newNode = new linkedNode(numBranches);
+
+	newNode->prev = node;
 }
 void set_numNodes(int num)
 {
