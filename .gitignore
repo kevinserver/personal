@@ -1,11 +1,13 @@
-firmware/*
-!firmware/default/
-firmware/default/bin/*
-firmware/default/obj/*
-firmware/default/applications/*
-!firmware/default/applications/HelloWorld
-!firmware/default/applications/FreeRTOS
-!firmware/default/applications/Telemetry
+146-243/SJSU-DEV-Linux/firmware/243/bin/*
+146-243/SJSU-DEV-Linux/firmware/243/obj/*
+146-243/SJSU-DEV-Linux/firmware/146/bin/*
+146-243/SJSU-DEV-Linux/firmware/146/obj/*
+146-243/SJSU-DEV-Linux/firmware/default/bin/*
+146-243/SJSU-DEV-Linux/firmware/default/obj/*
+146-243/SJSU-DEV-Linux/firmware/default/bin/*
+146-243/SJSU-DEV-Linux/firmware/default/obj/*
+
+
 
 cmpe146
 **/.gdb_history
