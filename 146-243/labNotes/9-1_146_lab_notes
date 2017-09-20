@@ -1,0 +1,49 @@
+9/1 146 lab
+
+'/' means active low
+P1.1 = port 1, wire 1
+
+P0.2 & P0.3: Tx & Rx connected to FT 232, then to USB
+
+Homework:
+	open loader.ld
+	research PLL: lets you run anywhere from 0-100MHz
+	look over sys_config.h
+
+	--> Practice loading programs to board.
+	class gpio : public scheduler_task
+	{
+		public:
+			gpio() : scheduler_task("gpio", 2000, PRIORITY_LOW)
+			{
+				//code
+			}
+			bool init(void) { //runs once
+				LPC_PINCON->PINSEL2 &= ~(3 << 2); //set functionality to GPIO
+				LPC_GPIO1->FIODIR |= (1<<1); //set direction to output
+				return true;
+			}
+			bool run(void *p) { //blink LED in 100ms intervals
+				LPC_GPIO1->FIOPIN |= (1<<1); //LPC_GPIO1->FIOSET = (1<<1);
+				vTaskDelay(100);
+				LPC_GPIO1->FIOPIN &= ~(1<<1); //LPC_GPIO1->FIOCLR = (1<<1);
+				vTaskDelay(100);
+
+				return true;
+			}
+	}
+
+	IN MAIN:
+	main() {
+		scheduler_add_task(new gpio_lab);
+
+		if(LPC_GPIO1->FIOPIN & (1<<23)) {
+		
+		}
+	}
+	use external switch and LED.
+
+driver for pins:
+	pin functionality (GPIO)
+	pin direction
+	control

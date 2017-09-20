@@ -1,0 +1,29 @@
+Unit tests
+
+cygwin installer:
+	gcc-core
+	mingw64
+
+
+/////header/////
+
+//$GPGGA,<float longitude>,<float latitude>
+//"$GPGGA,1.234,99.123"
+void gps_handle_string(char * gps_line);
+
+
+/////test file/////
+Ensure(test_defaults)
+{
+	assert_equal(get_long(), 0);
+	assert_equal(get_lat(), 0);
+}
+Ensure(test_get_long)
+{
+
+}
+Ensure(test_get_lat)
+{
+
+}
+TestSuite * 

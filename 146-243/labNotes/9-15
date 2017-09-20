@@ -1,0 +1,15 @@
+9-15
+
+UART:
+
+	User manual: chapter 14 for setup
+		PCONP
+		//macro: BIT(PCONP).b25 = 1;
+		PCLKSEL1
+		//macro: BIT(PCLKSEL1).b19_18 = 1;
+		pg. 322 for equation for DLL and DLM
+			(div / mul) = (0 / 1) = 0
+			DLM and DLL are 8 bit registers
+			combine to be a 16 bit register: DLM | DLL
+		DLAB bit in LCR register; 1 for setting DLL and DLM, 0 afterward
+		//macro: BIT(PCLKSEL9).b25_24 = 2;
