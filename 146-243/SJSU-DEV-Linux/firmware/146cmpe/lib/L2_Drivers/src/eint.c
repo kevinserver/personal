@@ -71,7 +71,9 @@ static inline void handle_eint_list(uint32_t *isr_bits_ptr, volatile uint32_t *i
 #ifdef __cplusplus
 extern "C" {
 #endif
-void EINT3_IRQHandler(void)
+////////////MODIFIED LINE/////////////
+void EINT3_IRQHandle(void) //default handler : EINT3_IRQHandler
+///////////^MODIFIED LINE^////////////
 {
     /* Read all the ports' rising and falling isr status */
     uint32_t p0_rising  = LPC_GPIOINT->IO0IntStatR;
