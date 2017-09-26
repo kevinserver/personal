@@ -4,42 +4,53 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <typeinfo>
 
 #include "mockFiles/mocktestfile.cpp"
 
 using namespace cgreen;
 
+
+
+
 Ensure(sensor_is_read_correctly)
 {
-	assert_that(readSensorValue(), is_equal_to(50));
+	always_expect(readSensorValue, will_return(0));
+	assert_that(readSensorValue(), is_equal_to(0));
 }
 
-Ensure(PWM_is_correct)
+Ensure(PWM_returns_neg_1)
 {
-	if (readSensorValue() < 0 || readSensorValue() > 100)
-	{
-		assert_equal(getMotorPWM(), -1);
-	}
-	else if (readSensorValue() >= 0 || readSensorValue() < 50)
-	{
-		assert_equal(getMotorPWM(), 8);
-	}
-	else //(readSensorValue() >= 50 || readSensorValue() <= 100)
-	{
-		assert_equal(getMotorPWM(), 9);
-	}
+	always_expect(readSensorValue, will_return(150));
+	assert_equal(getMotorPWM(), -1);
+}
+
+Ensure(PWM_returns_8) 
+{
+	always_expect(readSensorValue, will_return(25));
+	assert_equal(getMotorPWM(), 8);
+}
+
+Ensure(PWM_returns_9)
+{
+	always_expect(readSensorValue, will_return(90));
+	assert_equal(getMotorPWM(), 9);
 }
 
 TestSuite *PWM_test()
 {
 	TestSuite *suite = create_test_suite();
-	add_test(suite, PWM_is_correct);
+	add_test(suite, sensor_is_read_correctly);
+	add_test(suite, PWM_returns_neg_1);
+	add_test(suite, PWM_returns_8);
+	add_test(suite, PWM_returns_9);
 	return suite;
 }
 
 int main(int argc, char const *argv[])
 {
 	TestSuite *suite = create_test_suite();
+
 	add_suite(suite, PWM_test());
 
 
