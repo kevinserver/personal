@@ -5,8 +5,6 @@
 
 using namespace cgreen;
 
-// int sensorValue = 0;
-
 static int readSensorValue()
 {
 	return (int)mock();

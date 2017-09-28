@@ -29,14 +29,12 @@
 #include "uart2.hpp"
 #include "uart3.hpp"
 #include "utilities.h"
-#include "printf_lib.h"
+// #include "printf_lib.h"
+#include "my_eint3.h"
 
 
-SemaphoreHandle_t SW1_semaphore = NULL;
-SemaphoreHandle_t SW2_semaphore = NULL;
-
-void SW1_isr(void);
-void SW2_isr(void);
+// SemaphoreHandle_t SW1_semaphore = NULL;
+// SemaphoreHandle_t SW2_semaphore = NULL;
 
 /**
  * The main() creates tasks or "threads".  See the documentation of scheduler_task class at scheduler_task.hpp
@@ -55,11 +53,8 @@ void SW2_isr(void);
 int main(void)
 {
 
-    SW1_semaphore = xSemaphoreCreateBinary();
-    SW2_semaphore = xSemaphoreCreateBinary();
-
-    eint3_enable_port2(1, eint_rising_edge, SW1_isr);
-    eint3_enable_port2(2, eint_rising_edge, SW2_isr);
+    // SW1_semaphore = xSemaphoreCreateBinary();
+    // SW2_semaphore = xSemaphoreCreateBinary();
     /**
      * A few basic tasks for this bare-bone system :
      *      1.  Terminal task provides gateway to interact with the board through UART terminal.
@@ -71,6 +66,10 @@ int main(void)
      * control codes can be learned by typing the "learn" terminal command.
      */
     scheduler_add_task(new terminalTask(PRIORITY_HIGH));
+
+    scheduler_add_task(new SW1_IR(4));
+    scheduler_add_task(new SW2_IR(5));
+
 
     /* Consumes very little CPU, but need highest priority to handle mesh network ACKs */
     // scheduler_add_task(new wirelessTask(PRIORITY_CRITICAL));
@@ -147,19 +146,19 @@ int main(void)
 }
 
 
-void SW1_isr(void)
-{
-    long yield = 0;
-    xSemaphoreGiveFromISR(SW1_semaphore, &yield);
-    u0_dbg_printf("Switch 1 is pressed!\n");
-    LPC_GPIOINT->IO2IntClr = (1 << 1);
-    portYIELD_FROM_ISR(yield);
-}
-void SW2_isr(void)
-{
-    long yield = 0;
-    xSemaphoreGiveFromISR(SW2_semaphore, &yield);
-    u0_dbg_printf("Switch 2 is pressed!\n");
-    LPC_GPIOINT->IO2IntClr = (1 << 2);
-    portYIELD_FROM_ISR(yield);
-}
+// void SW1_isr(void)
+// {
+//     long yield = 0;
+//     xSemaphoreGiveFromISR(SW1_semaphore, &yield);
+//     u0_dbg_printf("Switch 1 is pressed!\n");
+//     LPC_GPIOINT->IO2IntClr = (1 << 1);
+//     portYIELD_FROM_ISR(yield);
+// }
+// void SW2_isr(void)
+// {
+//     long yield = 0;
+//     xSemaphoreGiveFromISR(SW2_semaphore, &yield);
+//     u0_dbg_printf("Switch 2 is pressed!\n");
+//     LPC_GPIOINT->IO2IntClr = (1 << 2);
+//     portYIELD_FROM_ISR(yield);
+// }

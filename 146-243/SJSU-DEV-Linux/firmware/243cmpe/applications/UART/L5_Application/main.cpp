@@ -173,7 +173,7 @@ bool uartLab::init(void)
 bool uartLab::run(void * p)
 {
     char sensorData [100] = {NULL};
-    char in [100] = {NULL};
+    // char in [100] = {NULL};
 
     sprintf(sensorData, "%0.0f", (TS.getCelsius() + 0.5)); //grab temp in Celsius and store in an array
     // printf("%s\n", sensorData);

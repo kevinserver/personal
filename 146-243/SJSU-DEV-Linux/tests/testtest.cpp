@@ -4,13 +4,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <typeinfo>
 
 #include "mockFiles/mocktestfile.cpp"
 
 using namespace cgreen;
-
-
 
 
 Ensure(sensor_is_read_correctly)
@@ -52,8 +49,6 @@ int main(int argc, char const *argv[])
 	TestSuite *suite = create_test_suite();
 
 	add_suite(suite, PWM_test());
-
-
 
 	return run_test_suite(suite, create_text_reporter());;
 }
