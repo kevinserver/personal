@@ -67,8 +67,8 @@ int main(void)
      */
     scheduler_add_task(new terminalTask(PRIORITY_HIGH));
 
-    scheduler_add_task(new SW1_IR(4));
-    scheduler_add_task(new SW2_IR(5));
+    scheduler_add_task(new SW1_IR(1));
+    scheduler_add_task(new SW2_IR(30, 0));
 
 
     /* Consumes very little CPU, but need highest priority to handle mesh network ACKs */

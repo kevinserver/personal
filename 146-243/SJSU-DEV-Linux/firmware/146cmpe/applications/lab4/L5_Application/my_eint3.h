@@ -27,19 +27,6 @@ typedef enum
 } edgeType_t;
 
 
-// #ifdef __cplusplus
-// extern "C" {
-// #endif
-
-
-// void EINT3_IRQHandler(void);
-
-
-// #ifdef __cplusplus
-// }
-// #endif
-
-
 void register_interrupt_eint3(uint8_t port, uint8_t pin, edgeType_t edgeType);
 
 

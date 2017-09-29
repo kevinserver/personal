@@ -33,11 +33,6 @@ void register_interrupt_eint3(uint8_t port, uint8_t pin, edgeType_t edgeType)
 	printf("Initializing Port %d, Pin %d.\n", port, pin);
 }
 
-// void register_interrupt_port2(uint8_t pin, edgeType_t edgeType)
-// {
-// 	LPC_GPIO2->FIODIR &= ~(1 << pin);
-// 	*edgeType = (1 << pin);
-// }
 
 
 
@@ -60,10 +55,11 @@ bool SW1_IR::init(void)
 
 bool SW1_IR::run(void * p)
 {
-	if (int_flag2[pin])
+	if ((port) ? int_flag2[pin] : int_flag0[pin])
 	{
 		u0_dbg_printf("SW1 pressed.\n");
 		int_flag2[pin] = 0;
+		LE.toggle(2);
 		// LPC_GPIOINT->IO2IntClr = (1 << pin);
 	}
 	return true;
@@ -86,10 +82,11 @@ bool SW2_IR::init(void)
 
 bool SW2_IR::run(void * p)
 {
-	if (int_flag2[pin])
+	if ((port) ? int_flag2[pin] : int_flag0[pin])
 	{
 		u0_dbg_printf("SW2 pressed.\n");
 		int_flag2[pin] = 0;
+		LE.toggle(2);
 		// LPC_GPIOINT->IO2IntClr = (1 << pin);
 	}
 	return true;
