@@ -1,16 +1,15 @@
 #include "my_eint3.h"
-#include "rtc_alarm.h"
-#include "rtc.h"
-#include "file_logger.h"
+// #include "rtc_alarm.h"
+// #include "rtc.h"
+// #include "file_logger.h"
 #include "io.hpp"
 #include "c_tlm_var.h"
-#include "wireless.h"
+// #include "wireless.h"
 #include "uart0.hpp"
 
 
 bool int_flag0[32] = {0};
 bool int_flag2[32] = {0};
-// bool SW2_flag = 0;
 
 extern "C" void EINT3_IRQHandler(void)
 {
@@ -26,17 +25,9 @@ extern "C" void EINT3_IRQHandler(void)
 
 void register_interrupt_eint3(uint8_t port, uint8_t pin, edgeType_t edgeType)
 {
-	//uint32_t * tempReg = (uint32_t*)INTERRUPT_DIRECTION(port);
-	*(INTERRUPT_DIRECTION(port)) &= ~(1 << pin);
-	//tempReg = (uint32_t*)INTERRUPT_EDGE(port, pin);
-	*(INTERRUPT_EDGE(port, edgeType)) |= (1 << pin);
-	printf("Initializing Port %d, Pin %d.\n", port, pin);
+	*(INTERRUPT_DIRECTION(port)) &= ~(1 << pin);   		//set GPIO to input on interrupt pin
+	*(INTERRUPT_EDGE(port, edgeType)) |= (1 << pin);	//set rising or falling edge as interrupt trigger
 }
-
-
-
-
-
 
 
 
@@ -58,9 +49,9 @@ bool SW1_IR::run(void * p)
 	if ((port) ? int_flag2[pin] : int_flag0[pin])
 	{
 		u0_dbg_printf("SW1 pressed.\n");
-		int_flag2[pin] = 0;
-		LE.toggle(2);
-		// LPC_GPIOINT->IO2IntClr = (1 << pin);
+		if (port) int_flag2[pin] = 0;
+		else int_flag0[pin] = 0;
+		LE.toggle(1);
 	}
 	return true;
 }
@@ -85,9 +76,9 @@ bool SW2_IR::run(void * p)
 	if ((port) ? int_flag2[pin] : int_flag0[pin])
 	{
 		u0_dbg_printf("SW2 pressed.\n");
-		int_flag2[pin] = 0;
+		if (port) int_flag2[pin] = 0;
+		else int_flag0[pin] = 0;
 		LE.toggle(2);
-		// LPC_GPIOINT->IO2IntClr = (1 << pin);
 	}
 	return true;
 }

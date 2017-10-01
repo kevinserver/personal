@@ -11,8 +11,6 @@
 #include "semphr.h"
 #include "printf_lib.h"
 
-// LPC_GPIOINT->IO0IntEnR
-// LPC_GPIOINT->IO0IntEnF
 #define RISE0 								&(LPC_GPIOINT->IO0IntEnR)
 #define FALL0 								&(LPC_GPIOINT->IO0IntEnF)
 #define RISE2								&(LPC_GPIOINT->IO2IntEnR)

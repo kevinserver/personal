@@ -29,12 +29,7 @@
 #include "uart2.hpp"
 #include "uart3.hpp"
 #include "utilities.h"
-// #include "printf_lib.h"
 #include "my_eint3.h"
-
-
-// SemaphoreHandle_t SW1_semaphore = NULL;
-// SemaphoreHandle_t SW2_semaphore = NULL;
 
 /**
  * The main() creates tasks or "threads".  See the documentation of scheduler_task class at scheduler_task.hpp
@@ -52,9 +47,6 @@
  */
 int main(void)
 {
-
-    // SW1_semaphore = xSemaphoreCreateBinary();
-    // SW2_semaphore = xSemaphoreCreateBinary();
     /**
      * A few basic tasks for this bare-bone system :
      *      1.  Terminal task provides gateway to interact with the board through UART terminal.
@@ -144,21 +136,3 @@ int main(void)
     scheduler_start(); ///< This shouldn't return
     return -1;
 }
-
-
-// void SW1_isr(void)
-// {
-//     long yield = 0;
-//     xSemaphoreGiveFromISR(SW1_semaphore, &yield);
-//     u0_dbg_printf("Switch 1 is pressed!\n");
-//     LPC_GPIOINT->IO2IntClr = (1 << 1);
-//     portYIELD_FROM_ISR(yield);
-// }
-// void SW2_isr(void)
-// {
-//     long yield = 0;
-//     xSemaphoreGiveFromISR(SW2_semaphore, &yield);
-//     u0_dbg_printf("Switch 2 is pressed!\n");
-//     LPC_GPIOINT->IO2IntClr = (1 << 2);
-//     portYIELD_FROM_ISR(yield);
-// }
