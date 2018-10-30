@@ -33,8 +33,11 @@ class Array_Search:
             # if(it % 2 == 1):
             #     self.tree.reroot(it)
             # it += 1
-        self.tree.printTree() # Do NOT leave this in
+        # self.tree.printTree() # Do NOT leave this in
         return False
+    
+    def bsearchtree(self, val):
+        return self.tree.bsearch(val)
 
 
 class BST_Node:
@@ -77,7 +80,7 @@ class BST:
         # print(False)
         return False
 
-    def printTree(self):
+    def printTree(self): #for ensuring tree is built correctly
         numTabs = 1
         it = self.root
         while it != None:
@@ -97,11 +100,34 @@ class BST:
     #     return False
 
     def bsearch(self, val):
-
+        if val < self.root.val:         # if left of root
+            if self.root.left == None:
+                return False
+            else:
+                return self.searchNode(self.root.left, val)
+        elif val == self.root.val:      # if it is root
+            return True
+        else:                           # if right of root
+            if self.root.right == None:
+                return False
+            else:
+                return self.searchNode(self.root.right, val)
 
         return False
 
     def searchNode(self, current, val):
+        if val < current.val:
+            if current.left == None:
+                return False
+            else:
+                return self.searchNode(current.left, val)
+        elif val == current.val:
+            return True
+        else:
+            if current.right == None:
+                return False
+            else:
+                return self.searchNode(current.right, val)
 
         return False
 
@@ -176,18 +202,38 @@ if __name__ == "__main__":
 
     # iteration
     set_szs = [10]
-    timing = []
+    timing = [0,0,0,0]
+    sequential_time = 0
+    BST_time = 0
+    num_numbers = int(input("How many numbers to generate? "))
+    bits = 32
 
     # my stuff
     # Array_Search
     array = []
     random.seed(time)
-    for i in range(0,10):
-        array.append(random.getrandbits(8))
-        # print(item, '\n')
-    print("random array: ", array)
+    for i in range(0,num_numbers):
+        array.append(random.getrandbits(bits))
+    print("Last element: ", array[num_numbers-1])
 
     searcher = Array_Search(array)
-    # searcher.init_array_search(array)
-    print(searcher.sequential_search(array[5]))
     searcher.create_bsearchtree()
+    # searcher.init_array_search(array)
+    while True:
+        search_for = input("Search for an 8-bit number: ")
+        if search_for != "exit":
+            search_for = int(search_for)
+            # search calls go here
+            timing[0] = time.perf_counter_ns()
+            print("sequential search:", searcher.sequential_search(search_for))
+            timing[1] = time.perf_counter_ns()
+            sequential_time = timing[1] - timing[0]
+            print("sequential time (ns):", sequential_time)
+
+            timing[2] = time.perf_counter_ns()
+            print("Binary search tree:", searcher.bsearchtree(search_for))
+            timing[3] = time.perf_counter_ns()
+            BST_time = timing[3] - timing[2]
+            print("BST time (ns):", BST_time)
+        else:
+            break
