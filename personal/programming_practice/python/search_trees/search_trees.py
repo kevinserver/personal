@@ -39,6 +39,12 @@ class Array_Search:
     def bsearchtree(self, val):
         return self.tree.bsearch(val)
 
+    def printTree(self):
+        return self.tree.printTree()
+
+    def deleteNode(self, val):
+        return self.tree.delete(val)
+
 
 class BST_Node:
     def __init__(self, val):
@@ -122,7 +128,7 @@ class BST:
             else:
                 return self.searchNode(current.left, val)
         elif val == current.val:
-            return True
+            return current
         else:
             if current.right == None:
                 return False
@@ -131,8 +137,39 @@ class BST:
 
         return False
 
-    def delete(self, val):
 
+
+##### WHILE INSTEAD OF RECURSIVE
+    def delete(self, val):
+        deleted = self.bsearch(val)
+        if deleted != False: # if value exisists
+            if deleted.left == None and deleted.right == None: # if no children
+                deleted.val = None
+                return True
+            return self.re_org(deleted)
+        else:
+            print("delete failed.")
+            return False
+
+        return False
+
+    def re_org(self, current):
+        l = current.left
+        r = current.right
+        if current:
+            if l != None:
+                temp = current
+                current.val = l.val
+                current.left = l.left
+                return self.re_org(current.left)
+            elif r != None:
+                current.val = r.val
+                current.right = r.right
+                return self.re_org(current.)
+            else:
+                return True
+        else:
+            return True
         return False
 
 
@@ -205,8 +242,8 @@ if __name__ == "__main__":
     timing = [0,0,0,0]
     sequential_time = 0
     BST_time = 0
-    num_numbers = int(input("How many numbers to generate? "))
-    bits = 32
+    bits = 8#int(input("How many bits? "))
+    num_numbers = 50#int(input("How many numbers to generate? "))
 
     # my stuff
     # Array_Search
@@ -220,8 +257,19 @@ if __name__ == "__main__":
     searcher.create_bsearchtree()
     # searcher.init_array_search(array)
     while True:
-        search_for = input("Search for an 8-bit number: ")
-        if search_for != "exit":
+        print("Commands:")
+        print("\ttree")
+        print("\tdelete")
+        print("\tsearch")
+        print("\tend")
+        command = input("Enter a command: ")
+        if command == "tree":
+            searcher.printTree()
+        elif command == "delete":
+            delete_val = int(input("Value to delete: "))
+            searcher.deleteNode(delete_val)
+        elif command == "search":
+            search_for = input("Search for a number: ")
             search_for = int(search_for)
             # search calls go here
             timing[0] = time.perf_counter_ns()
@@ -235,5 +283,7 @@ if __name__ == "__main__":
             timing[3] = time.perf_counter_ns()
             BST_time = timing[3] - timing[2]
             print("BST time (ns):", BST_time)
-        else:
+        elif command == "end":
             break
+        else:
+            continue
